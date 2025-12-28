@@ -32,10 +32,6 @@ public:
         m_currentAction = m_model->getCurrentAction();
     }
 
-    /// @brief Proposes a new lattice configuration, evaluates new action, throws random acceptance 
-    ///        and moves to new config if applicable
-    void doStep();
-
     /// @brief Print current and proposed action, and acceptance prob
     inline void printCurrentStep() const {
 
@@ -54,6 +50,13 @@ public:
     /// @}
 
 protected:
+
+    /// @brief Proposes a new lattice configuration, evaluates new action, throws random acceptance 
+    ///        and moves to new config if applicable
+    void doStep() override;
+
+    /// @brief Write out the current step using the writer
+    void writeStep() override;
 
     /// @brief Accept the proposed step
     ///        

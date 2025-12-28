@@ -25,6 +25,12 @@ public:
     ///        increments step counter
     void step() {
         doStep();
+
+        if (m_writer) {
+            m_writer->addInt("step", m_currentStep);
+            writeStep();
+            m_writer->writeStep();
+        }
         m_currentStep++;
     }
 
@@ -36,6 +42,9 @@ protected:
     /// @brief Perform a single sampler step. Should propose new config, decide whether to move there
     ///        and then do that
     virtual void doStep() = 0;
+
+    /// @brief Write out any information to save via the m_writer
+    virtual void writeStep() {}
 
     /// @brief The Lattice model
     std::shared_ptr<ModelBase> m_model;
