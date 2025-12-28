@@ -5,7 +5,8 @@
 #include <assert.h>
 #include <iostream>
 
-#define FLOAT float
+#include "dtypes.h"
+
 
 template < typename T = FLOAT >
 class Lattice2D{
