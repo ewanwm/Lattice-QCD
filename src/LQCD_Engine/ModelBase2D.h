@@ -1,9 +1,13 @@
 #pragma once
+
 #include <random>
+
+#include "omp.h"
+#include "dtypes.h"
 #include "Lattice.h"
 
 /// @brief Base class for various 2D spin models
-class SpinModelBase2D{
+class ModelBase2D{
 public:
 
     /// @brief Get the action for the current state of the model
@@ -51,22 +55,4 @@ protected:
 
     bool periodicBC = false; /// <! whether to use periodic boundary conditions
     /// \todo make boundary condition options some kind of enum or something
-};
-
-
-class MagneticSpinModel: public SpinModelBase2D{
-public:
-
-    /// @brief Constructor
-    /// @param nDims Number of lattice dimensions
-    /// @param sizeX Size of lattice in X
-    /// @param sizeY Size of lattice in Y
-    MagneticSpinModel(int nDims, int sizeX, int sizeY, FLOAT magneticCoupling=1.0);
-
-    void proposeLattice(FLOAT stepSize);
-
-private:
-    FLOAT getAction(std::vector<FLOAT> s1, std::vector<FLOAT> s2);
-
-    FLOAT magneticCoupling; /// <! The strength of the magnetic coupling between neighbouring lattice sites
 };

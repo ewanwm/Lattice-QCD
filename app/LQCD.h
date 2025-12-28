@@ -2,4 +2,4 @@
 
 #include "matplotlibcpp.h"
 #include "Lattice.h"
-#include "SpinModel.h"
+#include "MagneticSpinModel.h"
