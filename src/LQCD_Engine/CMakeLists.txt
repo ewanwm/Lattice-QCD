@@ -3,6 +3,7 @@ set_target_properties(dtypes PROPERTIES LINKER_LANGUAGE CXX)
 add_library(Lattice STATIC Lattice.h Lattice.cpp)
 add_library(MagneticSpinModel STATIC MagneticSpinModel.h MagneticSpinModel.cpp)
 add_library(LQED STATIC LQED.cpp LQED.h)
+
 add_library(
     LatticeConfig STATIC 
     ModelBase.h
