@@ -5,6 +5,7 @@ add_library(MagneticSpinModel STATIC MagneticSpinModel.h MagneticSpinModel.cpp)
 add_library(LQED STATIC LQED.cpp LQED.h)
 add_library(
     LatticeConfig STATIC 
+    ModelBase.h
     ModelBase2D.h ModelBase2D.cpp
     MagneticSpinModel.h MagneticSpinModel.cpp
 )
