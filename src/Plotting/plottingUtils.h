@@ -1,6 +1,9 @@
 #pragma once
 
 #include <vector>
+#include "matplotlibcpp.h"
+#include "Lattice.h"
+#include "dtypes.h"
 
 namespace plt = matplotlibcpp;
 

@@ -1,62 +1,47 @@
-#include "LQCD.h"
 #include "plottingUtils.h"
+#include "Lattice.h"
+#include "MagneticSpinModel.h"
+#include "SamplerMetropolisHastings.h"
 
 namespace plt = matplotlibcpp;
-FLOAT beta = -1.0;
 
 int main()
 {
     std::vector<FLOAT> stepIndices;
     std::vector<FLOAT> energies;
 
-    MagneticSpinModel model(2, 32, 32);
-    model.proposeLattice(0.005);
-    model.setPeriodicBC(true);
+    // create the lattice config model
+    auto model = std::make_shared<MagneticSpinModel>(2, 32, 32);
+    model->setPeriodicBC(true);
 
-    const Lattice2D<FLOAT> &lattice = model.getCurrentLattice();
+    // create the lattice config sampler
+    SamplerMetropolisHastings sampler(0.025);
+    sampler.SetModel(model);
+    sampler.initialise();
+
+    const Lattice2D<FLOAT> &lattice = model->getCurrentLattice();
 
     const uint nIterations = 1500000;
-
-    for(uint it = 0; it < nIterations; it++){
-
-        model.proposeLattice(0.025);
-
-        FLOAT propAction = model.getProposedAction();
-        FLOAT currentAction = model.getCurrentAction();
-
-        FLOAT accProb = (FLOAT)std::min((FLOAT)1.0, (FLOAT)std::exp(-beta * (propAction - currentAction)));
     
-        if ((it > 10) & (it % (uint) std::floor( nIterations / 10 ) == 0)) 
+    for(uint iteration = 0; iteration < nIterations; iteration++){
+        
+        sampler.step();
+
+        if ((iteration > 10) & (iteration % (uint) std::floor( nIterations / 10 ) == 0)) 
         {
             std::cout << std::endl;
+            std::cout << " ============ " << "Iteration " << iteration << " ============ " << std::endl;
 
-            std::cout << " ============ " << "Iteration " << it << " ============ " << std::endl;
-            std::cout << "Current Action:  " << currentAction << std::endl;
-            std::cout << "Proposed Action: " << propAction << std::endl;
-            std::cout << "Acceptance Prob: " << accProb << std::endl;
+            sampler.printCurrentStep();
+
+            std::cout 
+                << "Accepted steps:  " 
+                << sampler.getAcceptedSteps() << " / " << iteration 
+                << " (" << sampler.getAcceptanceRate() * 100.0 << "%) " << std::endl;
         }
-
-        FLOAT energyToSave = -9999.9;
-
-        // if proposed action > current, accept the other step
-        if( accProb == 1.0 ){
-            model.acceptProposedLattice();
-            energyToSave = propAction;
-        }
-        // otherwise accept with probability given by ratio 
-        else{
-            FLOAT rand = (FLOAT)std::rand() / (FLOAT)RAND_MAX;
-            if ( rand < accProb ){
-                model.acceptProposedLattice();
-                energyToSave = propAction;
-            }
-            else{
-                energyToSave = currentAction;
-            }
-        }
-
-        stepIndices.push_back((float)it);
-        energies.push_back(energyToSave);
+    
+        energies.push_back(sampler.getStepAction());
+        stepIndices.push_back((float)iteration);
     }
 
     plt::plot(energies);
