@@ -16,35 +16,19 @@ FLOAT ModelBase2D::getAction(Lattice2D<FLOAT> &latticeToCheck) {
 
             const auto &centralSite = latticeToCheck.getSite(x, y);
 
-            if (x == 0) {
-                if (periodicBC) {
-                    accum_thread += getAction(centralSite, latticeToCheck.getSite(sizeX - 1, y));
-                }
-            }
-            else {
-                accum_thread += getAction(centralSite, latticeToCheck.getSite(x - 1, y));
-            }
-            if (y == 0) {
-                if (periodicBC) {
-                    accum_thread += getAction(centralSite, latticeToCheck.getSite(x, sizeY - 1));
-                }
-            }
-            else {
-                accum_thread += getAction(centralSite, latticeToCheck.getSite(x, y - 1));
-            }
             if (x == latticeToCheck.getSizeX() -1) {
                 if (periodicBC) {
-                    accum_thread += getAction(centralSite, latticeToCheck.getSite(0, y));
+                    accum_thread += 2.0 * getAction(centralSite, latticeToCheck.getSite(0, y));
                 }
             }
             else {
-                accum_thread += getAction(centralSite, latticeToCheck.getSite(x + 1, y));
+                accum_thread += 2.0 * getAction(centralSite, latticeToCheck.getSite(x + 1, y));
             }
             if (y == latticeToCheck.getSizeY() -1) {
-                accum_thread += getAction(centralSite, latticeToCheck.getSite(x, 0));
+                accum_thread += 2.0 * getAction(centralSite, latticeToCheck.getSite(x, 0));
             }
             else {
-                accum_thread += getAction(centralSite, latticeToCheck.getSite(x, y + 1));
+                accum_thread += 2.0 * getAction(centralSite, latticeToCheck.getSite(x, y + 1));
             }
         }
 
