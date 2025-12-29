@@ -43,7 +43,12 @@ protected:
     /// @param s1 The vector of values at the first site
     /// @param s2 The vector of values at the second site
     /// @return The action for the connection of the two sites
-    virtual FLOAT getAction(std::vector<FLOAT> s1, std::vector<FLOAT> s2) = 0;
+    virtual FLOAT getAction(const std::vector<FLOAT> &s1, const std::vector<FLOAT> &s2) = 0;
+
+    /// @brief Get the self action for a site on the lattice
+    /// @param s1 The vector of values at the first site
+    /// @return The self action for the site
+    virtual FLOAT getAction(const std::vector<FLOAT> &s1) = 0;
 
     /// @brief Get the action for a particular lattice configuration
     /// @param latticeToCheck The lattice to get the action for 

@@ -16,6 +16,8 @@ FLOAT ModelBase2D::getAction(Lattice2D<FLOAT> &latticeToCheck) {
 
             const auto &centralSite = latticeToCheck.getSite(x, y);
 
+            accum_thread += getAction(centralSite);
+
             if (x == latticeToCheck.getSizeX() -1) {
                 if (periodicBC) {
                     accum_thread += 2.0 * getAction(centralSite, latticeToCheck.getSite(0, y));

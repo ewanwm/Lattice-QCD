@@ -40,7 +40,7 @@ void MagneticSpinModel::proposeLattice(FLOAT stepSize){
     }
 }
 
-FLOAT MagneticSpinModel::getAction(std::vector<FLOAT> s1, std::vector<FLOAT> s2) {
+FLOAT MagneticSpinModel::getAction(const std::vector<FLOAT> &s1, const std::vector<FLOAT> &s2) {
     assert(s1.size() == s2.size());
     FLOAT accum = 0.0;
 

@@ -15,7 +15,9 @@ public:
     void proposeLattice(FLOAT stepSize);
 
 private:
-    FLOAT getAction(std::vector<FLOAT> s1, std::vector<FLOAT> s2);
+    FLOAT getAction(const std::vector<FLOAT> &s1, const std::vector<FLOAT> &s2);
+    
+    inline FLOAT getAction(const std::vector<FLOAT> &s1) { return 0.0; };
 
     FLOAT magneticCoupling; /// <! The strength of the magnetic coupling between neighbouring lattice sites
 };
