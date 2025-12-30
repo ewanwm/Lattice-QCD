@@ -2,7 +2,7 @@
 add_library(
     sampling STATIC
     SamplerBase.h
-    SamplerMetropolisHastings.h SamplerMertopolisHastings.cpp
+    SamplerMetropolisHastings.h SamplerMetropolisHastings.cpp
     SampleWriterBase.h
 )
 

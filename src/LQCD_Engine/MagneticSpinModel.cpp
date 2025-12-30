@@ -48,5 +48,5 @@ FLOAT MagneticSpinModel::getAction(const std::vector<FLOAT> &s1, const std::vect
         accum += s1[d] * s2[d];
     }
 
-    return magneticCoupling * accum;
+    return - magneticCoupling * accum;
 }
