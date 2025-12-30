@@ -106,14 +106,18 @@ public:
 
     /// @defgroup Getters
     /// @{
-    inline const int getNDims() const { return nDims; }
-    inline const int getSizeX() const { return sizeX; }
-    inline const int getSizeY() const { return sizeY; }
+    inline const uint getNDims() const { return nDims; }
+    inline const uint getSizeX() const { return sizeX; }
+    inline const uint getSizeY() const { return sizeY; }
     /// @}
+
+    /// @brief Get total number of sites in the underlying lattice
+    /// @return N sites
+    virtual uint getNsites() { return getSizeX() * getSizeY(); };
 
 private:
     std::vector< std::vector< std::vector<T> > > siteArray;
-    int nDims;
-    int sizeX;
-    int sizeY;
+    uint nDims;
+    uint sizeX;
+    uint sizeY;
 };
