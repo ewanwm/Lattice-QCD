@@ -50,10 +50,95 @@ inline void binData(
     }
 }
 
+/// @brief Plot the first dimension of sites in a 2D lattice
+/// @param lattice The lattice to plot
+inline void plotLattice2D(const Lattice2D<FLOAT> &lattice) 
+{
+
+    // get the min and max values in the lattice
+    FLOAT min, max;
+
+    min = lattice.getSite(0, 0)[0];
+    max = lattice.getSite(0, 0)[0];
+
+    for (int x = 0; x < lattice.getSizeX(); x++) {
+        for (int y = 0; y < lattice.getSizeY(); y++) {
+    
+            min = std::min(min, lattice.getSite(x, y)[0]);
+            max = std::max(min, lattice.getSite(x, y)[0]);
+
+        }
+    }
+
+    // u and v are respectively the x and y components of the arrows we're plotting
+    std::vector<float> zVals;
+    for (int x = 0; x < lattice.getSizeX(); x++) {
+        for (int y = 0; y < lattice.getSizeY(); y++) {
+
+            auto &siteVals = lattice.getSite(x, y);
+            float z = (siteVals[0] - min) / (max - min);
+            zVals.push_back(z);
+        }
+    }
+
+    const float* zptr = &(zVals[0]);
+
+    plt::imshow(zptr, lattice.getSizeX(), lattice.getSizeY(), /*colors=*/1);
+    plt::show();
+}
+
+
+/// @brief Plot the first dimension of sites in a 2D lattice
+/// @param lattice The lattice to plot
+inline void plotLattice2DSurface(const Lattice2D<FLOAT> &lattice) 
+{
+
+    // get the min and max values in the lattice
+    FLOAT min, max;
+
+    min = lattice.getSite(0, 0)[0];
+    max = lattice.getSite(0, 0)[0];
+
+    for (int x = 0; x < lattice.getSizeX(); x++) {
+        for (int y = 0; y < lattice.getSizeY(); y++) {
+    
+            min = std::min(min, lattice.getSite(x, y)[0]);
+            max = std::max(min, lattice.getSite(x, y)[0]);
+
+        }
+    }
+
+    int xLow = - std::floor((float)lattice.getSizeX() / 2);
+    int xHigh = std::ceil((float)lattice.getSizeX() / 2);
+    int yLow = - std::floor((float)lattice.getSizeY() / 2);
+    int yHigh = std::ceil((float)lattice.getSizeY() / 2);
+
+    std::vector<std::vector<double>> xVals, yVals, zVals;
+    // u and v are respectively the x and y components of the arrows we're plotting
+    for (int x = xLow; x < xHigh; x++) {
+        std::vector<double> xRow, yRow, zRow;
+        for (int y = yLow; y < yHigh; y++) {
+
+            auto &siteVals = lattice.getSite(x - xLow, y - yLow);
+            float z = (siteVals[0] - min) / (max - min);
+
+            xRow.push_back(x);
+            yRow.push_back(y);
+            zRow.push_back(z);
+        }
+
+        xVals.push_back(xRow);
+        yVals.push_back(yRow);
+        zVals.push_back(zRow);
+    }
+
+    plt::plot_surface(xVals, yVals, zVals);
+    plt::show();
+}
 
 /// @brief Plot the first 2 dimensions of sites in a 2D lattice
 /// @param lattice The lattice to plot
-inline void plotLattice2D(const Lattice2D<FLOAT> &lattice) 
+inline void plotLattice2DArrows(const Lattice2D<FLOAT> &lattice) 
 {
     int xLow = - std::floor((float)lattice.getSizeX() / 2);
     int xHigh = std::ceil((float)lattice.getSizeX() / 2);
