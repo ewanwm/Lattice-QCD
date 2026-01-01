@@ -9,6 +9,7 @@ add_library(
     ModelBase.h
     ModelBase2D.h ModelBase2D.cpp
     MagneticSpinModel.h MagneticSpinModel.cpp
+    ScalarFieldModel.h ScalarFieldModel.cpp
 )
 
 target_include_directories(dtypes PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
