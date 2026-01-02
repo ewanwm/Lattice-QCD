@@ -6,8 +6,7 @@ add_library(LQED STATIC LQED.cpp LQED.h)
 
 add_library(
     LatticeConfig STATIC 
-    ModelBase.h
-    ModelBase2D.h ModelBase2D.cpp
+    ModelBase.h ModelBase.cpp
     MagneticSpinModel.h MagneticSpinModel.cpp
     ScalarFieldModel.h ScalarFieldModel.cpp
 )

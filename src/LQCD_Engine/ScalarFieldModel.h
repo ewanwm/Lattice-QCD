@@ -1,15 +1,17 @@
 #pragma once
 
-#include "ModelBase2D.h"
+#include "ModelBase.h"
 #include "dtypes.h"
 
-class ScalarFieldModel: public ModelBase2D{
+class ScalarFieldModel: public ModelBase{
 public:
 
     /// @brief Constructor
     /// @param sizeX Size of lattice in X
     /// @param sizeY Size of lattice in Y
-    ScalarFieldModel(int sizeX, int sizeY, FLOAT mass);
+    /// @param sizeZ Size of lattice in Z
+    /// @param sizeT Size of lattice in time
+    ScalarFieldModel(int sizeX, int sizeY, int sizeZ, int sizeT, FLOAT mass);
 
     void proposeLattice(FLOAT stepSize);
 

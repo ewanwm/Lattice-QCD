@@ -1,9 +1,9 @@
 #pragma once
 #include <random>
-#include "ModelBase2D.h"
+#include "ModelBase.h"
 #include "dtypes.h"
 
-class MagneticSpinModel: public ModelBase2D{
+class MagneticSpinModel: public ModelBase{
 public:
 
     /// @brief Constructor

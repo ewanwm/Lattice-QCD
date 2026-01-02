@@ -5,36 +5,36 @@ MagneticSpinModel::MagneticSpinModel(int nDims, int sizeX, int sizeY, FLOAT magn
         magneticCoupling(magneticCoupling)
     {
 
-    lattice = Lattice2D<FLOAT>(nDims, sizeX, sizeY);
-    lattice.randomise();
+    m_lattice = Lattice<FLOAT>(nDims, sizeX, sizeY, 0, 0);
+    m_lattice.randomise();
 
-    distribution = std::normal_distribution<FLOAT>(0.0, 1.0);
+    m_distribution = std::normal_distribution<FLOAT>(0.0, 1.0);
 
-    proposedLattice = Lattice2D<FLOAT>(nDims, sizeX, sizeY);
+    m_proposedLattice = Lattice<FLOAT>(nDims, sizeX, sizeY, 0, 0);
 
 }
 
 void MagneticSpinModel::proposeLattice(FLOAT stepSize){
 
-    proposedLattice.set(getCurrentLattice());
+    m_proposedLattice.set(getCurrentLattice());
     
-    for(int x = 0; x < proposedLattice.getSizeX(); x++){
-        for (int y= 0; y < proposedLattice.getSizeY(); y++){
+    for(int x = 0; x < m_proposedLattice.getSizeX(); x++){
+        for (int y= 0; y < m_proposedLattice.getSizeY(); y++){
 
             float norm = 0.0;
             // propose some random variations of the spin vectors
-            for (int d=0; d < proposedLattice.getNDims(); d++){
-                FLOAT val = proposedLattice.getSite(x,y)[d] + distribution(randomGenerator) * stepSize;
-                proposedLattice.setSite(x, y, d, val);
+            for (int d=0; d < m_proposedLattice.getNDims(); d++){
+                FLOAT val = m_proposedLattice.getSite(x,y, 0, 0)[d] + m_distribution(m_randomGenerator) * stepSize;
+                m_proposedLattice.setSite(x, y, 0, 0, d, val);
 
                 norm += val * val;
             }
 
             // normalise the spin vectors
             norm = std::sqrt(norm);
-            for (int d=0; d < proposedLattice.getNDims(); d++){
-                FLOAT val = proposedLattice.getSite(x,y)[d] / norm;
-                proposedLattice.setSite(x, y, d, val);
+            for (int d=0; d < m_proposedLattice.getNDims(); d++){
+                FLOAT val = m_proposedLattice.getSite(x,y, 0, 0)[d] / norm;
+                m_proposedLattice.setSite(x, y, 0, 0, d, val);
             }
         }
     }

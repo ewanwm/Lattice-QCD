@@ -52,20 +52,21 @@ inline void binData(
 
 /// @brief Plot the first dimension of sites in a 2D lattice
 /// @param lattice The lattice to plot
-inline void plotLattice2D(const Lattice2D<FLOAT> &lattice) 
+/// @param timeSlice The index of the time slice to plot
+inline void plotLattice(const Lattice<FLOAT> &lattice, uint zSlice, uint timeSlice = 0) 
 {
 
     // get the min and max values in the lattice
     FLOAT min, max;
 
-    min = lattice.getSite(0, 0)[0];
-    max = lattice.getSite(0, 0)[0];
+    min = lattice.getSite(0, 0, zSlice, timeSlice)[0];
+    max = lattice.getSite(0, 0, zSlice, timeSlice)[0];
 
     for (int x = 0; x < lattice.getSizeX(); x++) {
         for (int y = 0; y < lattice.getSizeY(); y++) {
     
-            min = std::min(min, lattice.getSite(x, y)[0]);
-            max = std::max(min, lattice.getSite(x, y)[0]);
+            min = std::min(min, lattice.getSite(x, y, zSlice, timeSlice)[0]);
+            max = std::max(min, lattice.getSite(x, y, zSlice, timeSlice)[0]);
 
         }
     }
@@ -75,7 +76,7 @@ inline void plotLattice2D(const Lattice2D<FLOAT> &lattice)
     for (int x = 0; x < lattice.getSizeX(); x++) {
         for (int y = 0; y < lattice.getSizeY(); y++) {
 
-            auto &siteVals = lattice.getSite(x, y);
+            auto &siteVals = lattice.getSite(x, y, zSlice, timeSlice);
             float z = (siteVals[0] - min) / (max - min);
             zVals.push_back(z);
         }
@@ -90,20 +91,20 @@ inline void plotLattice2D(const Lattice2D<FLOAT> &lattice)
 
 /// @brief Plot the first dimension of sites in a 2D lattice
 /// @param lattice The lattice to plot
-inline void plotLattice2DSurface(const Lattice2D<FLOAT> &lattice) 
+inline void plotLatticeSurface(const Lattice<FLOAT> &lattice, uint zSlice = 0, uint timeSlice = 0) 
 {
 
     // get the min and max values in the lattice
     FLOAT min, max;
 
-    min = lattice.getSite(0, 0)[0];
-    max = lattice.getSite(0, 0)[0];
+    min = lattice.getSite(0, 0, zSlice, timeSlice)[0];
+    max = lattice.getSite(0, 0, zSlice, timeSlice)[0];
 
     for (int x = 0; x < lattice.getSizeX(); x++) {
         for (int y = 0; y < lattice.getSizeY(); y++) {
     
-            min = std::min(min, lattice.getSite(x, y)[0]);
-            max = std::max(min, lattice.getSite(x, y)[0]);
+            min = std::min(min, lattice.getSite(x, y, zSlice, timeSlice)[0]);
+            max = std::max(min, lattice.getSite(x, y, zSlice, timeSlice)[0]);
 
         }
     }
@@ -119,7 +120,7 @@ inline void plotLattice2DSurface(const Lattice2D<FLOAT> &lattice)
         std::vector<double> xRow, yRow, zRow;
         for (int y = yLow; y < yHigh; y++) {
 
-            auto &siteVals = lattice.getSite(x - xLow, y - yLow);
+            auto &siteVals = lattice.getSite(x - xLow, y - yLow, zSlice, timeSlice);
             float z = (siteVals[0] - min) / (max - min);
 
             xRow.push_back(x);
@@ -138,7 +139,7 @@ inline void plotLattice2DSurface(const Lattice2D<FLOAT> &lattice)
 
 /// @brief Plot the first 2 dimensions of sites in a 2D lattice
 /// @param lattice The lattice to plot
-inline void plotLattice2DArrows(const Lattice2D<FLOAT> &lattice) 
+inline void plotLatticeArrows(const Lattice<FLOAT> &lattice, uint zSlice = 0, uint timeSlice = 0) 
 {
     int xLow = - std::floor((float)lattice.getSizeX() / 2);
     int xHigh = std::ceil((float)lattice.getSizeX() / 2);
@@ -154,7 +155,7 @@ inline void plotLattice2DArrows(const Lattice2D<FLOAT> &lattice)
             xVals.push_back(x);
             yVals.push_back(y);
 
-            auto &siteVals = lattice.getSite(x - xLow, y - yLow);
+            auto &siteVals = lattice.getSite(x - xLow, y - yLow, zSlice, timeSlice);
             uVals.push_back(siteVals[0]);
             vVals.push_back(siteVals[1]);
         }
