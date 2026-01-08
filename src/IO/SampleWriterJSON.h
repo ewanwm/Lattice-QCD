@@ -19,38 +19,44 @@ public:
 
         // open the output file for writing
         m_outFile = std::ofstream((m_outputName + ".json").c_str());
+        
+        // array of steps we will save
+        m_stepDataArray = json::array();
 
     }
 
     ~SampleWriterJSON() {
+        m_outFile << std::setw(4) << m_stepDataArray << std::endl;
         m_outFile.close();
     }
 
-    inline void addFloat(std::string name, FLOAT &value) {
+    inline void addFloat(std::string name, FLOAT value) {
         stepData[name] = value;
     }
 
-    inline void addInt(std::string name, uint &value) {
+    inline void addInt(std::string name, uint value) {
         stepData[name] = value;
     }
 
-    inline void addInt(std::string name, int &value) {
+    inline void addInt(std::string name, int value) {
         stepData[name] = value;
     }
 
-    inline void addBool(std::string name, bool &value) {
+    inline void addBool(std::string name, bool value) {
         stepData[name] = value;
     }
 
     inline void writeStep() {
 
-        m_outFile << std::setw(4) << stepData << std::endl;
+        m_stepDataArray.push_back(stepData);
 
     }
 
 private:
 
     json stepData;
+
+    json m_stepDataArray;
 
     std::ofstream m_outFile;
 

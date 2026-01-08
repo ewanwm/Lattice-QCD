@@ -28,5 +28,7 @@ void SamplerMetropolisHastings::writeStep() {
 
     m_writer->addFloat("action", m_currentAction);
     m_writer->addBool("proposalAccepted", m_stepAccepted);
+
+    m_model->writeObservables(*m_writer);
     
 }

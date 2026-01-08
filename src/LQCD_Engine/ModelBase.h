@@ -2,6 +2,7 @@
 
 #include "dtypes.h"
 #include "Lattice.h"
+#include "SampleWriterBase.h"
 #include <random>
 
 /// @brief Defines the interface of all models
@@ -26,7 +27,12 @@ public:
 
     /// @brief Propose a new configuration for the lattice
     /// \todo add ability to set the type of proposal using some kinda other object ("Proposer", "PropGenerator"... something like that)
-    virtual void proposeLattice(FLOAT stepSize) = 0;
+    virtual void proposeLattice(FLOAT stepSize);
+
+    /// @brief should add any observables to be saved out when sampling
+    virtual void writeObservables(SampleWriterBase &writer) {};
+    /// @todo make observables their own class and have some addObservable(observableBase) that can be called flexibly
+    /// depending on user configuration
 
     /// @defgroup Getters
     /// @{
