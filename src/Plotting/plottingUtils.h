@@ -91,7 +91,7 @@ inline void plotLattice(const Lattice<FLOAT> &lattice, uint zSlice, uint timeSli
 
 /// @brief Plot the first dimension of sites in a 2D lattice
 /// @param lattice The lattice to plot
-inline void plotLatticeSurface(const Lattice<FLOAT> &lattice, uint zSlice = 0, uint timeSlice = 0) 
+inline void plotLatticeSurface(const Lattice<FLOAT> &lattice, uint zSlice = 0, uint timeSlice = 0, bool normalise = false) 
 {
 
     // get the min and max values in the lattice
@@ -121,8 +121,14 @@ inline void plotLatticeSurface(const Lattice<FLOAT> &lattice, uint zSlice = 0, u
         for (int y = yLow; y < yHigh; y++) {
 
             auto &siteVals = lattice.getSite(x - xLow, y - yLow, zSlice, timeSlice);
-            float z = (siteVals[0] - min) / (max - min);
-
+            float z;
+            
+            if (normalise) {
+                z = (siteVals[0] - min) / (max - min);
+            }
+            else {
+                z = siteVals[0];
+            }
             xRow.push_back(x);
             yRow.push_back(y);
             zRow.push_back(z);
@@ -139,28 +145,57 @@ inline void plotLatticeSurface(const Lattice<FLOAT> &lattice, uint zSlice = 0, u
 
 /// @brief Plot the first 2 dimensions of sites in a 2D lattice
 /// @param lattice The lattice to plot
-inline void plotLatticeArrows(const Lattice<FLOAT> &lattice, uint zSlice = 0, uint timeSlice = 0) 
+inline void plotLatticeArrows(const Lattice<FLOAT> &lattice, int zSlice = -1, uint timeSlice = 0, float arrowScaling = 1.0) 
 {
+    // if lattice has a z dimension and we have not specified a particular slice
+    const bool plot3D = (lattice.getSizeZ() > 1) & (zSlice < 0);
+
     int xLow = - std::floor((float)lattice.getSizeX() / 2);
     int xHigh = std::ceil((float)lattice.getSizeX() / 2);
     int yLow = - std::floor((float)lattice.getSizeY() / 2);
     int yHigh = std::ceil((float)lattice.getSizeY() / 2);
-
-    std::vector<int> xVals, yVals;
-    // u and v are respectively the x and y components of the arrows we're plotting
-    std::vector<float> uVals, vVals;
-    for (int x = xLow; x < xHigh; x++) {
-        for (int y = yLow; y < yHigh; y++) {
-
-            xVals.push_back(x);
-            yVals.push_back(y);
-
-            auto &siteVals = lattice.getSite(x - xLow, y - yLow, zSlice, timeSlice);
-            uVals.push_back(siteVals[0]);
-            vVals.push_back(siteVals[1]);
+    int zLow = - std::floor((float)lattice.getSizeZ() / 2);
+    int zHigh = std::ceil((float)lattice.getSizeZ() / 2);
+    
+    if (!plot3D) {
+        if (zSlice >= 0) {
+            zLow = zSlice;
+            zHigh = zSlice + 1;
+        }
+        else {
+            zLow = 0;
+            zHigh = 1;
         }
     }
 
-    plt::quiver<int, int, float, float>(xVals, yVals, uVals, vVals);
+    std::vector<int> xVals, yVals, zVals;
+    // u and v are respectively the x and y components of the arrows we're plotting
+    std::vector<float> uVals, vVals, wVals;
+    for (int x = xLow; x < xHigh; x++) {
+        for (int y = yLow; y < yHigh; y++) {
+            for (int z = zLow; z < zHigh; z++) {
+                xVals.push_back(x);
+                yVals.push_back(y);
+                zVals.push_back(z);
+
+                auto &siteVals = lattice.getSite(x - xLow, y - yLow, z - zLow, timeSlice);
+                uVals.push_back(siteVals[0] * arrowScaling);
+                vVals.push_back(siteVals[1] * arrowScaling);
+
+                if (plot3D) {
+                    wVals.push_back(siteVals[2] * arrowScaling);
+                }
+            }
+        }
+    }
+
+    if (plot3D) {
+        plt::quiver<int, int, int, float, float, float>(xVals, yVals, zVals, uVals, vVals, wVals);
+
+    }
+    else {
+        plt::quiver<int, int, float, float>(xVals, yVals, uVals, vVals);
+    }
+    
     plt::show();
 }
