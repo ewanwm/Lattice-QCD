@@ -11,9 +11,12 @@ public:
     /// @param sizeY Size of lattice in Y
     /// @param sizeZ Size of lattice in Z
     /// @param sizeT Size of lattice in time
-    ScalarFieldModel(int sizeX, int sizeY, int sizeZ, int sizeT, FLOAT mass);
-
-    void proposeLattice(FLOAT stepSize);
+    ScalarFieldModel(int sizeX, int sizeY, int sizeZ, int sizeT, FLOAT mass) 
+    :
+        ModelBase(1, sizeX, sizeY, sizeZ, sizeT),
+        m_mass(mass)
+    {
+    }
 
 private:
 

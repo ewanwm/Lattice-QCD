@@ -10,9 +10,14 @@ public:
     /// @param nDims Number of lattice dimensions
     /// @param sizeX Size of lattice in X
     /// @param sizeY Size of lattice in Y
-    MagneticSpinModel(int nDims, int sizeX, int sizeY, FLOAT magneticCoupling=1.0);
+    MagneticSpinModel(int nDims, int sizeX, int sizeY, int sizeZ, FLOAT magneticCoupling=1.0)
+    :
+        ModelBase(nDims, sizeX, sizeY, sizeZ, 1),
+        magneticCoupling(magneticCoupling)
+    {
+    }
 
-    void proposeLattice(FLOAT stepSize);
+    void proposeLattice(FLOAT stepSize) override;
 
 private:
     FLOAT getAction(const std::vector<FLOAT> &s1, const std::vector<FLOAT> &s2);

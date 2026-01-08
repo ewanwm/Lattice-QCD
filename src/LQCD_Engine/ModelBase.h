@@ -9,6 +9,13 @@ class ModelBase {
 
 public:
 
+    /// @brief Constructor
+    /// @param sizeX size in X direction
+    /// @param sizeY size in Y direction
+    /// @param sizeZ size in Z direction 
+    /// @param sizeT size in time 
+    ModelBase(uint nDims, uint sizeX, uint sizeY, uint sizeZ, uint sizeT);
+
     /// @brief Get the action for the current lattice configuration
     /// @return The action
     inline FLOAT getCurrentAction()  { return getAction(m_lattice); }
